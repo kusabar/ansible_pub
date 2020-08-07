@@ -1,0 +1,14 @@
+---
+# windows_update.yml
+
+- hosts: all
+  tasks:
+  - name: install windows update
+    win_updates:
+      state: installed
+      reboot: yes
+    register: install_result
+  
+  -name: check result
+    debug: var=install_result
+
