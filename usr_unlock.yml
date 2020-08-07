@@ -1,7 +1,7 @@
 ---
 # usr_unlock.yml
 
-- hosts: "{{ hostname }}"
+- hosts: all
   gather_facts: false
   tasks:
   - name: Ensure user user01 is present
