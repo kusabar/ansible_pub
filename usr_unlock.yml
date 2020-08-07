@@ -1,0 +1,17 @@
+# usr_unlock.yml
+---
+
+- hosts: "{{ hostname }}"
+  gather_facts: false
+  tasks:
+  - name: Ensure user user01 is present
+    win_user:
+      name: user01
+      groups:
+        - Users
+        - Administrators
+        - Remote Desktop Users
+      password: P@ssw0rd
+      state: present
+      account_locked: no
+      account_disabled: no

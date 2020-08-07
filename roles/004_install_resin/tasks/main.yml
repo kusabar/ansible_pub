@@ -1,0 +1,66 @@
+# 004_install_resin/tasks/main.yml
+---
+
+# 
+# https://www.intra-mart.jp/document/library/iap/public/setup/iap_setup_guide/texts/install/windows/resin_windows.html#id4
+# 
+
+- name: copy resin  
+  win_copy:
+    src: /root/git/soft/resin-pro-4.0.64.zip
+    dest: C:\imart\resin-pro-4.0.64.zip
+
+- name: unzip resin
+  win_unzip:
+    src: C:\imart\resin-pro-4.0.64.zip
+    dest: C:\imart
+
+- name: delete resin-pro-4.0.64.zip
+  win_file:
+    path: C:\imart\resin-pro-4.0.64.zip
+    state: absent
+
+- name: copy OJDBC driver  
+  win_copy:
+    src: /root/git/soft/ojdbc8.jar
+    dest: C:\imart\resin-pro-4.0.64/lib/ojdbc8.jar
+
+- name: Install .Net 3.5
+  win_feature:
+    name: NET-Framework-Features
+    state: present
+
+
+
+# .NET3.5インストール方法 NG集
+############################
+## NG ##
+#- name: Install .Net 3.5 
+#  win_optional_feature:
+#    name: NetFx3
+#    state: present
+#
+############################
+## NG ##
+#- name: install .NetFramework3.5
+#  win_shell: dism /online /Enable-Feature /all /FeatureName:NetFx3
+#
+############################
+## NG ##
+#- name: Install .Net 3.5 
+#  win_shell: dism /online /Enable-Feature /all /FeatureName:NetFx3dism /online /Enable-Feature /all /FeatureName:NetFx3
+#
+############################
+## NG ##
+#- name: copy install_.Net_Framework3.5.ps1
+#  win_copy:
+#    src: /root/git/soft/install_.NetFramework3.5.ps1
+#    dest: C:\imart\install_.NetFramework3.5.ps1
+#- name: Install .Net 3.5 
+#  win_shell: C:\imart\install_.NetFramework3.5.ps1
+#- name: delete install_.Net_Framework3.5.ps1
+#  win_file:
+#    path: C:\imart\install_.NetFramework3.5.ps1
+#    state: absent
+# 
+# 

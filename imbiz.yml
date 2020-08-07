@@ -1,0 +1,13 @@
+# imbiz.yml
+---
+
+- hosts: imbiz
+  gather_facts: false
+  roles:
+    - 002_mkdir
+    - 003_install_java
+    - 004_install_resin
+
+
+
+
