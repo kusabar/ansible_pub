@@ -1,5 +1,6 @@
-# 003_install_java/tasks/main.yml
 ---
+# 003_install_java/tasks/main.yml
+
 # ansible マネジャの/root/git/soft/ に下記があること
 # ・jdk-8u201-windows-x64.exe
 # 

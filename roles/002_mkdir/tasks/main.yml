@@ -1,5 +1,5 @@
-# 002_mkdir/tasks/main.yml
 ---
+# 002_mkdir/tasks/main.yml
 
 - name: Create directory [java]
   win_file:
