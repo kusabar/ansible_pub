@@ -9,7 +9,7 @@
       reboot: yes
     register: install_result
   
-  -name: check result
-    debug: 
-      var: install_result
-
+#  -name: check result
+#    debug: 
+#      var: install_result
+#
