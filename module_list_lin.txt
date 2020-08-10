@@ -1,0 +1,56 @@
+# インベントリの登録
+vi /etc/ansible/hosts
+	[vmsrv]
+	vm[11:12].ksb.net
+
+# SSH 公開鍵の準備（Manager側）
+ssh-keygen
+
+# SSH 公開鍵を管理ノードに送付
+ssh-copy-id [ユーザー名@管理ノードのIP]
+ssh-copy-id root@vm11.ksb.net
+ssh-copy-id root@vm12.ksb.net
+
+
+※上記の公開鍵を送付しないと下記に用にエラーが出てSSHできない
+    "msg": "Failed to connect to the host via ssh: ssh: connect to host vm12.ksb.net port 22: No route to host",
+
+
+# ping モジュールを利用して 全てのインベントリへping 
+ansible  -m ping all
+
+# ping モジュールを利用して vmsrvインベントリへping 
+ansible  -m ping vmsrv
+ansible vmsrv -m ping 
+
+
+# ファイル転送
+echo test > ./test.txt
+ansible vmsrv -m copy -a "src=./test.txt dest=/tmp/aaa.txt"
+
+ansible vmsrv -a "ls -l /tmp/aaa.txt"
+
+
+
+■小技
+
+# 複数コマンドのある場合
+[改善前]
+- shell: echo "hello" ; echo "world"; echo "bye"
+
+[改善後]
+- shell: |-
+    echo "hello"
+    echo "world"
+    echo "bye"
+
+
+# 1コマンドを改行したい場合
+[改善前]
+- shell: echo "hello" "world"
+
+[改善後]
+- shell: >-
+    echo
+    "hello"
+    "world"

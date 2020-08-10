@@ -1,0 +1,376 @@
+変数の確認
+ansible-inventory --graph --vars
+
+アドホック
+ansible <対象> -m <モジュール> -a <引数>
+
+ansible imbiz -m win_ping
+ansible imbiz -m win_optional_feature -a name=NetFx3
+
+
+■コマンド
+
+# ディレクトリの作成
+- name: Create directory [C:\work]
+  win_file:
+    path: C:\work
+    state: directory
+
+# ディレクトリの削除
+- name: delete directory [C:\work]
+  win_file:
+    path: C:\work
+    state: absent
+
+# リモートホスト上でのファイルコピー
+- name: Copy a single file where the source is on the remote host
+  win_copy:
+    src: C:\Temp\foo.txt
+    dest: C:\ansible\foo.txt
+    remote_src: yes
+
+# マネジャからクライアントサーバへのファイルコピー
+- name: copy OJDBC driver  
+  win_copy:
+    src: /root/git/soft/ojdbc8.jar
+    dest: C:\imart\resin-pro-4.0.64/lib/ojdbc8.jar
+
+
+# javaのサイレントインストール
+- name: install java
+  win_shell: C:\Java\jdk-8u201-windows-x64.exe /s INSTALLDIR=C:\Java\jdk1.8.0_201 /INSTALLDIRPUBJRE=C:\Java\jre1.8.0_201
+
+
+# zipの解凍
+- name: unzip resin
+  win_unzip:
+    src: C:\imart\resin-pro-4.0.64.zip
+    dest: C:\imart
+
+# PowerShell 実行
+- name: 
+  win_shell: <<コマンド>>
+
+# コマンドプロンプトの実行
+- name: 
+  win_command: <<コマンド>>
+
+# Windows 機能のインストール
+- name: Install .Net 3.5 
+  win_optional_feature:
+    name: NetFx3
+    state: present
+
+機能一覧の表示
+Get-WindowsOptionalFeature -Online
+
+.Net3.5の機能のステータス確認
+Get-WindowsOptionalFeature -FeatureName NetFx3 -Online
+
+
+# 役割と機能の機能のインストール
+- name: Install .Net 3.5
+  win_feature:
+    name: NET-Framework-Features
+    state: present
+
+Windowsの機能一覧
+Get-WindowsFeature
+	PS C:\Users\Administrator> Get-WindowsFeature
+	
+	Display Name                                            Name                       Install State
+	------------                                            ----                       -------------
+	[ ] Active Directory Federation Services                ADFS-Federation                Available
+	[ ] Active Directory Rights Management サービス         ADRMS                          Available
+	    [ ] Active Directory Rights Management サーバー     ADRMS-Server                   Available
+	    [ ] ID フェデレーション サポート                    ADRMS-Identity                 Available
+	[ ] Active Directory ドメイン サービス                  AD-Domain-Services             Available
+	[ ] Active Directory ライトウェイト ディレクトリ サ...  ADLDS                          Available
+	[ ] Active Directory 証明書サービス                     AD-Certificate                 Available
+	    [ ] 証明機関                                        ADCS-Cert-Authority            Available
+	    [ ] オンライン レスポンダー                         ADCS-Online-Cert               Available
+	    [ ] ネットワーク デバイス登録サービス               ADCS-Device-Enrollment         Available
+	    [ ] 証明機関 Web 登録                               ADCS-Web-Enrollment            Available
+	    [ ] 証明書の登録 Web サービス                       ADCS-Enroll-Web-Svc            Available
+	    [ ] 証明書の登録ポリシー Web サービス               ADCS-Enroll-Web-Pol            Available
+	[ ] DHCP サーバー                                       DHCP                           Available
+	[ ] DNS サーバー                                        DNS                            Available
+	[ ] FAX サーバー                                        Fax                            Available
+	[ ] Host Guardian サービス                              HostGuardianServiceRole        Available
+	[ ] Hyper-V                                             Hyper-V                        Available
+	[X] Web サーバー (IIS)                                  Web-Server                     Installed
+	    [X] Web サーバー                                    Web-WebServer                  Installed
+	        [X] HTTP 共通機能                               Web-Common-Http                Installed
+	            [X] HTTP エラー                             Web-Http-Errors                Installed
+	            [X] ディレクトリの参照                      Web-Dir-Browsing               Installed
+	            [X] 既定のドキュメント                      Web-Default-Doc                Installed
+	            [X] 静的なコンテンツ                        Web-Static-Content             Installed
+	            [X] HTTP リダイレクト                       Web-Http-Redirect              Installed
+	            [ ] WebDAV 発行                             Web-DAV-Publishing             Available
+	        [X] セキュリティ                                Web-Security                   Installed
+	            [X] 要求フィルター                          Web-Filtering                  Installed
+	            [ ] IIS クライアント証明書マッピング認証    Web-Cert-Auth                  Available
+	            [ ] IP およびドメインの制限                 Web-IP-Security                Available
+	            [ ] SSL 証明書の集中サポート                Web-CertProvider               Available
+	            [ ] URL 承認                                Web-Url-Auth                   Available
+	            [X] Windows 認証                            Web-Windows-Auth               Installed
+	            [X] クライアント証明書マッピング認証        Web-Client-Auth                Installed
+	            [ ] ダイジェスト認証                        Web-Digest-Auth                Available
+	            [X] 基本認証                                Web-Basic-Auth                 Installed
+	        [X] パフォーマンス                              Web-Performance                Installed
+	            [X] 静的なコンテンツの圧縮                  Web-Stat-Compression           Installed
+	            [ ] 動的なコンテンツの圧縮                  Web-Dyn-Compression            Available
+	        [X] 状態と診断                                  Web-Health                     Installed
+	            [X] HTTP ログ                               Web-Http-Logging               Installed
+	            [ ] ODBC ログ                               Web-ODBC-Logging               Available
+	            [ ] カスタム ログ                           Web-Custom-Logging             Available
+	            [X] トレース                                Web-Http-Tracing               Installed
+	            [X] ログ ツール                             Web-Log-Libraries              Installed
+	            [X] 要求の監視                              Web-Request-Monitor            Installed
+	        [X] アプリケーション開発                        Web-App-Dev                    Installed
+	            [ ] .NET 拡張機能 3.5                       Web-Net-Ext                    Available
+	            [ ] .NET 拡張機能 4.7                       Web-Net-Ext45                  Available
+	            [ ] Application Initialization              Web-AppInit                    Available
+	            [ ] ASP                                     Web-ASP                        Available
+	            [ ] ASP.NET 3.5                             Web-Asp-Net                    Available
+	            [ ] ASP.NET 4.7                             Web-Asp-Net45                  Available
+	            [ ] CGI                                     Web-CGI                        Available
+	            [ ] ISAPI フィルター                        Web-ISAPI-Filter               Available
+	            [X] ISAPI 拡張                              Web-ISAPI-Ext                  Installed
+	            [ ] WebSocket プロトコル                    Web-WebSockets                 Available
+	            [ ] サーバー側インクルード                  Web-Includes                   Available
+	    [ ] FTP サーバー                                    Web-Ftp-Server                 Available
+	        [ ] FTP サービス                                Web-Ftp-Service                Available
+	        [ ] FTP 拡張                                    Web-Ftp-Ext                    Available
+	    [X] 管理ツール                                      Web-Mgmt-Tools                 Installed
+	        [X] IIS 管理コンソール                          Web-Mgmt-Console               Installed
+	        [X] IIS 6 管理互換                              Web-Mgmt-Compat                Installed
+	            [X] IIS 6 メタベース互換                    Web-Metabase                   Installed
+	            [ ] IIS 6 WMI 互換                          Web-WMI                        Available
+	            [ ] IIS 6 スクリプト ツール                 Web-Lgcy-Scripting             Available
+	            [ ] IIS 6 管理コンソール                    Web-Lgcy-Mgmt-Console          Available
+	        [ ] IIS 管理スクリプトおよびツール              Web-Scripting-Tools            Available
+	        [ ] 管理サービス                                Web-Mgmt-Service               Available
+	[ ] Windows Server Update Services                      UpdateServices                 Available
+	    [ ] WID Connectivity                                UpdateServices-WidDB           Available
+	    [ ] WSUS Services                                   UpdateServices-Services        Available
+	    [ ] SQL Server Connectivity                         UpdateServices-DB              Available
+	[ ] Windows 展開サービス                                WDS                            Available
+	    [ ] トランスポート サーバー                         WDS-Transport                  Available
+	    [ ] 展開サーバー                                    WDS-Deployment                 Available
+	[ ] デバイス正常性構成証明                              DeviceHealthAttestat...        Available
+	[ ] ネットワーク コントローラー                         NetworkController              Available
+	[X] ネットワーク ポリシーとアクセス サービス            NPAS                           Installed
+	[X] ファイル サービスと記憶域サービス                   FileAndStorage-Services        Installed
+	    [ ] ファイル サービスおよび iSCSI サービス          File-Services                  Available
+	        [ ] ファイル サーバー                           FS-FileServer                  Available
+	        [ ] DFS レプリケーション                        FS-DFS-Replication             Available
+	        [ ] DFS 名前空間                                FS-DFS-Namespace               Available
+	        [ ] iSCSI ターゲット サーバー                   FS-iSCSITarget-Server          Available
+	        [ ] iSCSI ターゲット記憶域プロバイダー (VDS ... iSCSITarget-VSS-VDS            Available
+	        [ ] NFS サーバー                                FS-NFS-Service                 Available
+	        [ ] データ重複除去                              FS-Data-Deduplication          Available
+	        [ ] ネットワーク ファイル用 BranchCache         FS-BranchCache                 Available
+	        [ ] ファイル サーバー VSS エージェント サービス FS-VSS-Agent                   Available
+	        [ ] ファイル サーバー リソース マネージャー     FS-Resource-Manager            Available
+	        [ ] ワーク フォルダー                           FS-SyncShareService            Available
+	    [X] 記憶域サービス                                  Storage-Services               Installed
+	[ ] ボリューム ライセンス認証サービス                   VolumeActivation               Available
+	[ ] リモート アクセス                                   RemoteAccess                   Available
+	    [ ] DirectAccess および VPN (RAS)                   DirectAccess-VPN               Available
+	    [ ] Web アプリケーション プロキシ                   Web-Application-Proxy          Available
+	    [ ] ルーティング                                    Routing                        Available
+	[X] リモート デスクトップ サービス                      Remote-Desktop-Services        Installed
+	    [ ] Remote Desktop Session Host                     RDS-RD-Server                  Available
+	    [ ] リモート デスクトップ Web アクセス              RDS-Web-Access                 Available
+	    [X] リモート デスクトップ ゲートウェイ              RDS-Gateway                    Installed
+	    [ ] リモート デスクトップ ライセンス                RDS-Licensing                  Available
+	    [ ] リモート デスクトップ仮想化ホスト               RDS-Virtualization             Available
+	    [ ] リモート デスクトップ接続ブローカー             RDS-Connection-Broker          Available
+	[ ] 印刷とドキュメント サービス                         Print-Services                 Available
+	    [ ] プリント サーバー                               Print-Server                   Available
+	    [ ] LPD サービス                                    Print-LPD-Service              Available
+	    [ ] インターネット印刷                              Print-Internet                 Available
+	[ ] .NET Framework 3.5 Features                         NET-Framework-Features         Available
+	    [ ] .NET Framework 3.5 (.NET 2.0 および 3.0 を含む) NET-Framework-Core               Removed
+	    [ ] HTTP アクティブ化                               NET-HTTP-Activation            Available
+	    [ ] 非 HTTP アクティブ化                            NET-Non-HTTP-Activ             Available
+	[X] .NET Framework 4.7 Features                         NET-Framework-45-Fea...        Installed
+	    [X] .NET Framework 4.7                              NET-Framework-45-Core          Installed
+	    [ ] ASP.NET 4.7                                     NET-Framework-45-ASPNET        Available
+	    [X] WCF サービス                                    NET-WCF-Services45             Installed
+	        [ ] HTTP アクティブ化                           NET-WCF-HTTP-Activat...        Available
+	        [ ] TCP アクティブ化                            NET-WCF-TCP-Activati...        Available
+	        [X] TCP ポート共有                              NET-WCF-TCP-PortShar...        Installed
+	        [ ] メッセージ キュー (MSMQ) アクティブ化       NET-WCF-MSMQ-Activat...        Available
+	        [ ] 名前付きパイプのアクティブ化                NET-WCF-Pipe-Activat...        Available
+	[ ] BitLocker ドライブ暗号化                            BitLocker                      Available
+	[ ] BitLocker ネットワーク ロック解除                   BitLocker-NetworkUnlock        Available
+	[ ] BranchCache                                         BranchCache                    Available
+	[ ] Containers                                          Containers                     Available
+	[ ] Data Center Bridging                                Data-Center-Bridging           Available
+	[ ] Direct Play                                         Direct-Play                    Available
+	[ ] Fabric Management 用の VM シールド ツール           FabricShieldedTools            Available
+	[ ] Host Guardian Hyper-V サポート                      HostGuardian                   Available
+	[X] HTTP プロキシを経由した RPC                         RPC-over-HTTP-Proxy            Installed
+	[ ] I/O サービス品質                                    DiskIo-QoS                     Available
+	[ ] IIS ホスト可能な Web コア                           Web-WHC                        Available
+	[ ] IP アドレス管理 (IPAM) サーバー                     IPAM                           Available
+	[ ] iSNS サーバー サービス                              ISNS                           Available
+	[ ] LPR ポート モニター                                 LPR-Port-Monitor               Available
+	[ ] Management OData IIS 拡張機能                       ManagementOdata                Available
+	[ ] MultiPoint Connector                                MultiPoint-Connector           Available
+	    [ ] MultiPoint Connector サービス                   MultiPoint-Connector...        Available
+	    [ ] MultiPoint マネージャーおよび MultiPoint ダ...  MultiPoint-Tools               Available
+	[ ] NFS クライアント                                    NFS-Client                     Available
+	[ ] RAS Connection Manager Administration Kit (CMAK)    CMAK                           Available
+	[ ] RDC (Remote Differential Compression)               RDC                            Available
+	[ ] Simple TCP/IP Services                              Simple-TCPIP                   Available
+	[ ] SMB 1.0/CIFS File Sharing Support                   FS-SMB1                        Available
+	    [ ] SMB 1.0/CIFS Client                             FS-SMB1-CLIENT                 Available
+	    [ ] SMB 1.0/CIFS Server                             FS-SMB1-SERVER                 Available
+	[ ] SMB 帯域幅の制限                                    FS-SMBBW                       Available
+	[ ] SMTP サーバー                                       SMTP-Server                    Available
+	[ ] SNMP サービス                                       SNMP-Service                   Available
+	    [ ] WMI SNMP プロバイダー                           SNMP-WMI-Provider              Available
+	[ ] Storage Migration Service                           SMS                            Available
+	[ ] Storage Migration Service Proxy                     SMS-Proxy                      Available
+	[X] System Data Archiver                                System-DataArchiver            Installed
+	[ ] System Insights                                     System-Insights                Available
+	[ ] Telnet Client                                       Telnet-Client                  Available
+	[ ] TFTP Client                                         TFTP-Client                    Available
+	[ ] WebDAV リダイレクター                               WebDAV-Redirector              Available
+	[X] Windows Defender Antivirus                          Windows-Defender               Installed
+	[ ] Windows Identity Foundation 3.5                     Windows-Identity-Fou...        Available
+	[ ] Windows Internal Database                           Windows-Internal-Dat...        Available
+	[X] Windows PowerShell                                  PowerShellRoot                 Installed
+	    [X] Windows PowerShell 5.1                          PowerShell                     Installed
+	    [ ] Windows PowerShell 2.0 エンジン                 PowerShell-V2                    Removed
+	    [ ] Windows PowerShell Desired State Configurati... DSC-Service                    Available
+	    [X] Windows PowerShell ISE                          PowerShell-ISE                 Installed
+	    [ ] Windows PowerShell Web Access                   WindowsPowerShellWeb...        Available
+	[ ] Windows Search サービス                             Search-Service                 Available
+	[ ] Windows Server バックアップ                         Windows-Server-Backup          Available
+	[ ] Windows Server 移行ツール                           Migration                      Available
+	[ ] Windows Subsystem for Linux                         Microsoft-Windows-Su...        Available
+	[ ] Windows TIFF IFilter                                Windows-TIFF-IFilter           Available
+	[ ] Windows プロセス アクティブ化サービス               WAS                            Available
+	    [ ] プロセス モデル                                 WAS-Process-Model              Available
+	    [ ] .NET 環境 3.5                                   WAS-NET-Environment            Available
+	    [ ] 構成 API                                        WAS-Config-APIs                Available
+	[ ] Windows 生体認証フレームワーク                      Biometric-Framework            Available
+	[ ] Windows 標準ベースの記憶域の管理                    WindowsStorageManage...        Available
+	[ ] WinRM IIS 拡張機能                                  WinRM-IIS-Ext                  Available
+	[ ] WINS サーバー                                       WINS                           Available
+	[X] WoW64 サポート                                      WoW64-Support                  Installed
+	[X] XPS Viewer                                          XPS-Viewer                     Installed
+	[ ] インターネット印刷クライアント                      Internet-Print-Client          Available
+	[ ] グループ ポリシーの管理                             GPMC                           Available
+	[ ] セットアップおよびブート イベント収集               Setup-and-Boot-Event...        Available
+	[ ] ソフトウェア ロード バランサー                      SoftwareLoadBalancer           Available
+	[ ] ネットワーク仮想化                                  NetworkVirtualization          Available
+	[ ] ネットワーク負荷分散                                NLB                            Available
+	[ ] バックグラウンド インテリジェント転送サービス (B... BITS                           Available
+	    [ ] IIS サーバー拡張機能                            BITS-IIS-Ext                   Available
+	    [ ] コンパクト サーバー                             BITS-Compact-Server            Available
+	[ ] ピア名解決プロトコル                                PNRP                           Available
+	[ ] フェールオーバー クラスタリング                     Failover-Clustering            Available
+	[ ] マルチパス I/O                                      Multipath-IO                   Available
+	[ ] メッセージ キュー                                   MSMQ                           Available
+	    [ ] メッセージ キュー サービス                      MSMQ-Services                  Available
+	        [ ] メッセージ キュー サーバー                  MSMQ-Server                    Available
+	        [ ] HTTP サポート                               MSMQ-HTTP-Support              Available
+	        [ ] ディレクトリ サービス統合                   MSMQ-Directory                 Available
+	        [ ] マルチキャスト サポート                     MSMQ-Multicasting              Available
+	        [ ] メッセージ キュー トリガー                  MSMQ-Triggers                  Available
+	        [ ] ルーティング サービス                       MSMQ-Routing                   Available
+	    [ ] メッセージ キュー DCOM プロキシ                 MSMQ-DCOM                      Available
+	[ ] メディア ファンデーション                           Server-Media-Foundation        Available
+	[ ] リモート アシスタンス                               Remote-Assistance              Available
+	[X] リモート サーバー管理ツール                         RSAT                           Installed
+	    [ ] 機能管理ツール                                  RSAT-Feature-Tools             Available
+	        [ ] SMTP サーバー ツール                        RSAT-SMTP                      Available
+	        [ ] BitLocker ドライブ暗号化管理ユーティリティ  RSAT-Feature-Tools-B...        Available
+	            [ ] BitLocker ドライブ暗号化ツール          RSAT-Feature-Tools-B...        Available
+	            [ ] BitLocker 回復パスワード ビューアー     RSAT-Feature-Tools-B...        Available
+	        [ ] BITS サーバー拡張ツール                     RSAT-Bits-Server               Available
+	        [ ] DataCenterBridging LLDP ツール              RSAT-DataCenterBridg...        Available
+	        [ ] IP アドレス管理 (IPAM) クライアント         IPAM-Client-Feature            Available
+	        [ ] SNMP ツール                                 RSAT-SNMP                      Available
+	        [ ] Storage Migration Service Tools             RSAT-SMS                       Available
+	        [ ] System Insights Module for Windows Power... RSAT-System-Insights           Available
+	        [ ] Windows PowerShell 用記憶域レプリカ モジ... RSAT-Storage-Replica           Available
+	        [ ] WINS サーバー ツール                        RSAT-WINS                      Available
+	        [ ] シールドされた VM のツール                  RSAT-Shielded-VM-Tools         Available
+	        [ ] ネットワーク負荷分散ツール                  RSAT-NLB                       Available
+	        [ ] フェールオーバー クラスタリング ツール      RSAT-Clustering                Available
+	            [ ] Windows PowerShell 用のフェールオー...  RSAT-Clustering-Powe...        Available
+	            [ ] フェールオーバー クラスター管理ツール   RSAT-Clustering-Mgmt           Available
+	            [ ] フェールオーバー クラスター コマンド... RSAT-Clustering-CmdI...        Available
+	            [ ] フェールオーバー クラスター自動化サ...  RSAT-Clustering-Auto...        Available
+	    [X] 役割管理ツール                                  RSAT-Role-Tools                Installed
+	        [ ] AD DS および AD LDS ツール                  RSAT-AD-Tools                  Available
+	            [ ] AD DS ツール                            RSAT-ADDS                      Available
+	                [ ] Active Directory 管理センター       RSAT-AD-AdminCenter            Available
+	                [ ] AD DS スナップインおよびコマンド... RSAT-ADDS-Tools                Available
+	            [ ] AD LDS Snap-Ins and Command-Line Tools  RSAT-ADLDS                     Available
+	            [ ] Windows PowerShell の Active Directo... RSAT-AD-PowerShell             Available
+	        [ ] Hyper-V 管理ツール                          RSAT-Hyper-V-Tools             Available
+	            [ ] Hyper-V GUI 管理ツール                  Hyper-V-Tools                  Available
+	            [ ] Windows PowerShell 用 Hyper-V モジュ... Hyper-V-PowerShell             Available
+	        [ ] Windows Server Update Services ツール       UpdateServices-RSAT            Available
+	            [ ] API と PowerShell コマンドレット        UpdateServices-API             Available
+	            [ ] ユーザー インターフェイス管理コンソール UpdateServices-UI              Available
+	        [X] リモート デスクトップ サービス ツール       RSAT-RDS-Tools                 Installed
+	            [X] リモート デスクトップ ゲートウェイ ...  RSAT-RDS-Gateway               Installed
+	            [ ] リモート デスクトップ ライセンス ツール RDS-Licensing-UI               Available
+	            [ ] リモート デスクトップ ライセンス診断... RSAT-RDS-Licensing-D...        Available
+	        [ ] Active Directory Rights Management サー...  RSAT-ADRMS                     Available
+	        [ ] Active Directory 証明書サービス ツール      RSAT-ADCS                      Available
+	            [ ] オンライン レスポンダー ツール          RSAT-Online-Responder          Available
+	            [ ] 証明機関管理ツール                      RSAT-ADCS-Mgmt                 Available
+	        [ ] DHCP サーバー ツール                        RSAT-DHCP                      Available
+	        [ ] DNS サーバー ツール                         RSAT-DNS-Server                Available
+	        [ ] FAX サーバー ツール                         RSAT-Fax                       Available
+	        [ ] Network Controller Management Tools         RSAT-NetworkController         Available
+	        [ ] Windows 展開サービス ツール                 WDS-AdminPack                  Available
+	        [X] ネットワーク ポリシーとアクセス サービス... RSAT-NPAS                      Installed
+	        [ ] ファイル サービス ツール                    RSAT-File-Services             Available
+	            [ ] DFS 管理ツール                          RSAT-DFS-Mgmt-Con              Available
+	            [ ] ネットワーク ファイル システム管理ツ... RSAT-NFS-Admin                 Available
+	            [ ] ファイル サーバー リソース マネージ...  RSAT-FSRM-Mgmt                 Available
+	        [ ] ボリューム ライセンス認証ツール             RSAT-VA-Tools                  Available
+	        [ ] リモート アクセス管理ツール                 RSAT-RemoteAccess              Available
+	            [ ] Windows PowerShell 用のリモート アク... RSAT-RemoteAccess-Po...        Available
+	            [ ] リモート アクセス GUI ツールとコマン... RSAT-RemoteAccess-Mgmt         Available
+	        [ ] 印刷とドキュメント サービス ツール          RSAT-Print-Services            Available
+	[ ] ワイヤレス LAN サービス                             Wireless-Networking            Available
+	[ ] 拡張記憶域                                          EnhancedStorage                Available
+	[ ] 記憶域レプリカ                                      Storage-Replica                Available
+	[ ] 高品質な Windows オーディオ ビデオ エクスペリエンス qWave                          Available
+	
+	
+	PS C:\Users\Administrator>
+	
+
+
+# ユーザの作成
+- name: Ensure user user01 is present
+  win_user:
+    name: user01
+    password: password
+    groups:
+      - Users
+      - Administrators
+      - Remote Desktop Users
+    account_locked: no
+    account_disabled: no
+    state: present
+
+
+
+# RDGateway の構築
+win_rds_cap – Manage Connection Authorization Policies (CAP) on a Remote Desktop Gateway server
+win_rds_rap – Manage Resource Authorization Policies (RAP) on a Remote Desktop Gateway server
+win_rds_settings – Manage main settings of a Remote Desktop Gateway server
+
