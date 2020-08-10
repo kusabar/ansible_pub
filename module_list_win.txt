@@ -4,8 +4,8 @@ ansible-inventory --graph --vars
 アドホック
 ansible <対象> -m <モジュール> -a <引数>
 
-ansible imbiz -m win_ping
-ansible imbiz -m win_optional_feature -a name=NetFx3
+ansible XXsrv -m win_ping
+ansible XXsrv -m win_optional_feature -a name=NetFx3
 
 
 ■コマンド
