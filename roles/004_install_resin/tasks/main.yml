@@ -1,9 +1,9 @@
 ---
 # 004_install_resin/tasks/main.yml
 
-# 
+#
 # https://www.intra-mart.jp/document/library/iap/public/setup/iap_setup_guide/texts/install/windows/resin_windows.html#id4
-# 
+#
 
 # resinをDLできるURL
 # https://objectstorage.ap-tokyo-1.oraclecloud.com/p/dZz0TGXIViFI8FZ77gsLeIdAgabqLby0Fi1GaisPkZ4sl_3raMhBuJTJmAIDS6Ig/n/nrbm2decixme/b/data-biz/o/resin-pro-4.0.62.zip
@@ -11,31 +11,29 @@
 # OJDBCをDLできるURL
 # https://objectstorage.ap-tokyo-1.oraclecloud.com/p/avFfO9lxDAsR_SyRP7ITx-MlZ8euOKO0qdXsbm3deKNK2M8hQmAxXXs9GOdIyxf2/n/nrbm2decixme/b/data-biz/o/ojdbc8.jar
 
-- name: DL resin  
-  win_shell: wget https://objectstorage.ap-tokyo-1.oraclecloud.com/p/dZz0TGXIViFI8FZ77gsLeIdAgabqLby0Fi1GaisPkZ4sl_3raMhBuJTJmAIDS6Ig/n/nrbm2decixme/b/data-biz/o/resin-pro-4.0.62.zip -OutFile C:\imart\resin-pro-4.0.64.zip
-
-#- name: copy resin  
+- name: DL resin
+  win_shell: wget https://objectstorage.ap-tokyo-1.oraclecloud.com/p/dZz0TGXIViFI8FZ77gsLeIdAgabqLby0Fi1GaisPkZ4sl_3raMhBuJTJmAIDS6Ig/n/nrbm2decixme/b/data-biz/o/resin-pro-4.0.62.zip -OutFile C:\imart\resin-pro-4.0.62.zip
+#- name: copy resin
 #  win_copy:
-#    src: /root/git/soft/resin-pro-4.0.64.zip
-#    dest: C:\imart\resin-pro-4.0.64.zip
+#    src: /root/git/soft/resin-pro-4.0.62.zip
+#    dest: C:\imart\resin-pro-4.0.62.zip
 
 - name: unzip resin
   win_unzip:
-    src: C:\imart\resin-pro-4.0.64.zip
+    src: C:\imart\resin-pro-4.0.62.zip
     dest: C:\imart
 
-- name: delete resin-pro-4.0.64.zip
+- name: delete resin-pro-4.0.62.zip
   win_file:
-    path: C:\imart\resin-pro-4.0.64.zip
+    path: C:\imart\resin-pro-4.0.62.zip
     state: absent
 
 - name: DL OJDBC driver
-  win_shell: wget https://objectstorage.ap-tokyo-1.oraclecloud.com/p/avFfO9lxDAsR_SyRP7ITx-MlZ8euOKO0qdXsbm3deKNK2M8hQmAxXXs9GOdIyxf2/n/nrbm2decixme/b/data-biz/o/ojdbc8.jar -OutFile C:\imart\resin-pro-4.0.64/lib/ojdbc8.jar
-
+  win_shell: wget https://objectstorage.ap-tokyo-1.oraclecloud.com/p/avFfO9lxDAsR_SyRP7ITx-MlZ8euOKO0qdXsbm3deKNK2M8hQmAxXXs9GOdIyxf2/n/nrbm2decixme/b/data-biz/o/ojdbc8.jar -OutFile C:\imart\resin-pro-4.0.62/lib/ojdbc8.jar
 #- name: copy OJDBC driver
 #  win_copy:
 #    src: /root/git/soft/ojdbc8.jar
-#    dest: C:\imart\resin-pro-4.0.64/lib/ojdbc8.jar
+#    dest: C:\imart\resin-pro-4.0.62/lib/ojdbc8.jar
 
 - name: Install .Net 3.5
   win_feature:
@@ -47,7 +45,7 @@
 # .NET3.5インストール方法 NG集
 ############################
 ## NG ##
-#- name: Install .Net 3.5 
+#- name: Install .Net 3.5
 #  win_optional_feature:
 #    name: NetFx3
 #    state: present
@@ -59,7 +57,7 @@
 #
 ############################
 ## NG ##
-#- name: Install .Net 3.5 
+#- name: Install .Net 3.5
 #  win_shell: dism /online /Enable-Feature /all /FeatureName:NetFx3dism /online /Enable-Feature /all /FeatureName:NetFx3
 #
 ############################
@@ -68,11 +66,11 @@
 #  win_copy:
 #    src: /root/git/soft/install_.NetFramework3.5.ps1
 #    dest: C:\imart\install_.NetFramework3.5.ps1
-#- name: Install .Net 3.5 
+#- name: Install .Net 3.5
 #  win_shell: C:\imart\install_.NetFramework3.5.ps1
 #- name: delete install_.Net_Framework3.5.ps1
 #  win_file:
 #    path: C:\imart\install_.NetFramework3.5.ps1
 #    state: absent
-# 
-# 
+#
+#
