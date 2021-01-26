@@ -7,11 +7,16 @@
 # JDK 
 # 
 
+# javaをDLできるURL
+# https://objectstorage.ap-tokyo-1.oraclecloud.com/p/8-NPnOsY3YIp_5jpKbF8pkCHw8MwbQ5Je0lIiu-5T0FCJI4Poa_OtUrLF8w2Lhhj/n/nrbm2decixme/b/data-biz/o/jdk-8u201-windows-x64.exe
 
-- name: copy jdk-8u201-windows-x64.exe
-  win_copy:
-    src: /root/git/soft/jdk-8u201-windows-x64.exe
-    dest: C:\Java\jdk-8u201-windows-x64.exe
+
+- name: DL jdk-8u201-windows-x64.exe
+  win_shell: wget https://objectstorage.ap-tokyo-1.oraclecloud.com/p/8-NPnOsY3YIp_5jpKbF8pkCHw8MwbQ5Je0lIiu-5T0FCJI4Poa_OtUrLF8w2Lhhj/n/nrbm2decixme/b/data-biz/o/jdk-8u201-windows-x64.exe -OutFile C:\Java\jdk-8u201-windows-x64.exe
+#- name: copy jdk-8u201-windows-x64.exe
+#  win_copy:
+#    src: /root/git/soft/jdk-8u201-windows-x64.exe
+#    dest: C:\Java\jdk-8u201-windows-x64.exe
 - name: install java
   win_shell: C:\Java\jdk-8u201-windows-x64.exe /s INSTALLDIR=C:\Java\jdk1.8.0_201 /INSTALLDIRPUBJRE=C:\Java\jre1.8.0_201
 - name: delete jdk-8u201-windows-x64.exe
