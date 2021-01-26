@@ -8,7 +8,10 @@
 # resinをDLできるURL
 # https://objectstorage.ap-tokyo-1.oraclecloud.com/p/dZz0TGXIViFI8FZ77gsLeIdAgabqLby0Fi1GaisPkZ4sl_3raMhBuJTJmAIDS6Ig/n/nrbm2decixme/b/data-biz/o/resin-pro-4.0.62.zip
 
-- name: copy resin  
+# OJDBCをDLできるURL
+# https://objectstorage.ap-tokyo-1.oraclecloud.com/p/avFfO9lxDAsR_SyRP7ITx-MlZ8euOKO0qdXsbm3deKNK2M8hQmAxXXs9GOdIyxf2/n/nrbm2decixme/b/data-biz/o/ojdbc8.jar
+
+- name: DL resin  
   win_shell: wget https://objectstorage.ap-tokyo-1.oraclecloud.com/p/dZz0TGXIViFI8FZ77gsLeIdAgabqLby0Fi1GaisPkZ4sl_3raMhBuJTJmAIDS6Ig/n/nrbm2decixme/b/data-biz/o/resin-pro-4.0.62.zip -OutFile C:\imart\resin-pro-4.0.64.zip
 
 #- name: copy resin  
@@ -26,10 +29,13 @@
     path: C:\imart\resin-pro-4.0.64.zip
     state: absent
 
-- name: copy OJDBC driver  
-  win_copy:
-    src: /root/git/soft/ojdbc8.jar
-    dest: C:\imart\resin-pro-4.0.64/lib/ojdbc8.jar
+- name: DL OJDBC driver
+  win_shell: wget https://objectstorage.ap-tokyo-1.oraclecloud.com/p/avFfO9lxDAsR_SyRP7ITx-MlZ8euOKO0qdXsbm3deKNK2M8hQmAxXXs9GOdIyxf2/n/nrbm2decixme/b/data-biz/o/ojdbc8.jar -OutFile C:\imart\resin-pro-4.0.64/lib/ojdbc8.jar
+
+#- name: copy OJDBC driver
+#  win_copy:
+#    src: /root/git/soft/ojdbc8.jar
+#    dest: C:\imart\resin-pro-4.0.64/lib/ojdbc8.jar
 
 - name: Install .Net 3.5
   win_feature:
