@@ -24,4 +24,13 @@
     - C:\imart\biz_batch_bootstrap
     - C:\imart\biz_di_manager
     - C:\imart\biz_asynchronous_manager
-    
+
+# ループ別の記載方法
+# - name: Create directory [IM/Biz]
+#   win_file:
+#     path: "{{ item }}"
+#     state: directory
+#   with_items:
+#     - C:\imart\biz_batch_bootstrap
+#     - C:\imart\biz_di_manager
+#     - C:\imart\biz_asynchronous_manager
